@@ -119,7 +119,7 @@ export default function NFTDetailPage({ params }: PageProps) {
       if (result?.hash) {
         setBuyHash(result.hash);
 
-        // Transfer ownership
+        // Transfer ownership — sends full NFT data so server can create it if needed (mock NFTs)
         await fetch("/api/user/nfts", {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -128,6 +128,12 @@ export default function NFTDetailPage({ params }: PageProps) {
             ownerAddress: account.address,
             listed: false,
             price: 0,
+            name: nft.name,
+            image: nft.image,
+            description: nft.description,
+            tokenId: nft.tokenId,
+            collectionId: nft.collection?.id,
+            creatorAddress: nft.creator?.address,
           }),
         });
 

@@ -116,10 +116,31 @@ export async function PATCH(request: NextRequest) {
   try {
     const store = getStore();
     const body = await request.json();
-    const { nftId, price, listed, ownerAddress } = body;
+    const { nftId, price, listed, ownerAddress, name, image, description, tokenId, collectionId, creatorAddress } = body;
 
     if (!nftId) {
       return Response.json({ error: "nftId required" }, { status: 400 });
+    }
+
+    const existing = store.getNft(nftId);
+
+    if (!existing && ownerAddress) {
+      const nft = store.createNft({
+        id: nftId,
+        tokenId: tokenId || nftId,
+        name: name || "Untitled",
+        description: description || "",
+        image: image || "",
+        attributes: [],
+        ownerAddress, ownerId: ownerAddress,
+        creatorAddress: creatorAddress || ownerAddress, creatorId: creatorAddress || ownerAddress,
+        collectionId: collectionId || "col-default",
+        mintTxHash: "", royaltyPercent: 2.5,
+        price: price ?? 0, listed: listed ?? false,
+        createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(),
+        mintedAt: new Date().toISOString(),
+      });
+      return Response.json({ data: nft });
     }
 
     const updates: Record<string, any> = {};
