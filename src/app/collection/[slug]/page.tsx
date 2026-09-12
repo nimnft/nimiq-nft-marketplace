@@ -94,7 +94,8 @@ export default function CollectionDetailPage({ params }: PageProps) {
 
   const collectionNFTs = useMemo(() => {
     if (!collection) return [];
-    const allNFTs = [...apiNFTs, ...mockNFTs];
+    const apiIds = new Set(apiNFTs.map((n: any) => n.id));
+    const allNFTs = [...apiNFTs, ...mockNFTs.filter((n: any) => !apiIds.has(n.id))];
     let filtered = allNFTs.filter((n) => n.collection.id === collection.id);
     if (nftFilter === "listed") filtered = filtered.filter((n) => n.listed);
     if (nftFilter === "unlisted") filtered = filtered.filter((n) => !n.listed);
@@ -115,7 +116,8 @@ export default function CollectionDetailPage({ params }: PageProps) {
 
   const collectionOwners = useMemo(() => {
     if (!collection) return [];
-    const allNFTs = [...apiNFTs, ...mockNFTs];
+    const apiIds = new Set(apiNFTs.map((n: any) => n.id));
+    const allNFTs = [...apiNFTs, ...mockNFTs.filter((n: any) => !apiIds.has(n.id))];
     const nftsInCollection = allNFTs.filter((n) => n.collection.id === collection.id);
     const ownerMap = new Map<string, { owner: NFT["owner"]; count: number }>();
     for (const nft of nftsInCollection) {

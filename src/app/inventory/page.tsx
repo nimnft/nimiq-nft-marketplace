@@ -59,7 +59,11 @@ export default function SellPage() {
 
   useEffect(() => { fetchNFTs().then(setApiNFTs).catch(() => {}); }, [refreshKey]);
 
-  const allNFTs = useMemo(() => [...apiNFTs, ...mockNFTs], [apiNFTs]);
+  const allNFTs = useMemo(() => {
+    const apiIds = new Set(apiNFTs.map((n: any) => n.id));
+    const uniqueMock = mockNFTs.filter((n: any) => !apiIds.has(n.id));
+    return [...apiNFTs, ...uniqueMock];
+  }, [apiNFTs]);
 
   const myNFTs = useMemo(() => {
     if (!account?.address) return [];

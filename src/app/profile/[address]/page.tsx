@@ -154,7 +154,10 @@ export default function ProfilePage({ params }: PageProps) {
     setFollowerDelta((p) => (isFollowing ? p - 1 : p + 1));
   }, [isFollowing]);
 
-  const allNFTs = useMemo(() => [...apiNFTs, ...mockNFTs], [apiNFTs]);
+  const allNFTs = useMemo(() => {
+    const apiIds = new Set(apiNFTs.map((n: any) => n.id));
+    return [...apiNFTs, ...mockNFTs.filter((n: any) => !apiIds.has(n.id))];
+  }, [apiNFTs]);
 
   const collectedNFTs = useMemo(
     () => sortNFTs(allNFTs.filter((nft) => nft.owner.address === user?.address), collectedSort),

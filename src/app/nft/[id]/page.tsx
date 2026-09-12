@@ -69,7 +69,11 @@ export default function NFTDetailPage({ params }: PageProps) {
     }).catch(() => {});
   }, []);
 
-  const allNFTs = useMemo(() => [...apiNFTs, ...mockNFTs], [apiNFTs]);
+  const allNFTs = useMemo(() => {
+    const apiIds = new Set(apiNFTs.map((n: any) => n.id));
+    const uniqueMock = mockNFTs.filter((n: any) => !apiIds.has(n.id));
+    return [...apiNFTs, ...uniqueMock];
+  }, [apiNFTs]);
   const nft = useMemo(() => allNFTs.find((n: any) => n.id === id) ?? null, [allNFTs, id]);
 
   const activities = useMemo(() => {

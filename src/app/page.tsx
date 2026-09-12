@@ -116,7 +116,10 @@ export default function HomePage() {
     fetchNFTs().then(setUserNFTs).catch(() => {});
   }, []);
 
-  const allNFTs = [...userNFTs, ...mockNFTs];
+  const allNFTs = (() => {
+    const apiIds = new Set(userNFTs.map((n: any) => n.id));
+    return [...userNFTs, ...mockNFTs.filter((n: any) => !apiIds.has(n.id))];
+  })();
   const featuredCollections = mockCollections.filter((c) => c.featured).slice(0, 4);
   const trendingNFTs = allNFTs.filter((n: any) => n.listed).slice(0, 8);
   const recentlyListed = allNFTs.filter((n: any) => n.listed).slice(0, 8);

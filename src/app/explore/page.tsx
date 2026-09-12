@@ -137,10 +137,16 @@ export default function ExplorePage() {
     setVisibleCount(ITEMS_PER_PAGE);
   }, []);
 
-  const creators = useMemo(() => getUniqueCreators([...apiNFTs, ...mockNFTs]), [apiNFTs]);
+  const creators = useMemo(() => {
+    const apiIds = new Set(apiNFTs.map((n: any) => n.id));
+    const uniqueMock = mockNFTs.filter((n: any) => !apiIds.has(n.id));
+    return getUniqueCreators([...apiNFTs, ...uniqueMock]);
+  }, [apiNFTs]);
 
   const filteredNFTs = useMemo(() => {
-    let result = [...apiNFTs, ...mockNFTs];
+    const apiIds = new Set(apiNFTs.map((n: any) => n.id));
+    const uniqueMock = mockNFTs.filter((n: any) => !apiIds.has(n.id));
+    let result = [...apiNFTs, ...uniqueMock];
 
     if (filters.search) {
       result = result.filter((nft) => matchesSearch(nft, filters.search));
