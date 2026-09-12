@@ -256,7 +256,7 @@ export default function MintPage() {
         )}
 
         {activeTab === "single" ? (
-          /* ========== SINGLE NFT TAB — NO COLLECTION SELECTOR ========== */
+          /* ========== SINGLE NFT TAB  NO COLLECTION SELECTOR ========== */
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-6">
               <div className="rounded-2xl border border-border bg-surface p-6">
@@ -385,7 +385,7 @@ export default function MintPage() {
             </div>
           </div>
         ) : (
-          /* ========== COLLECTION TAB — WITH COLLECTION SELECTOR ========== */
+          /* ========== COLLECTION TAB  WITH COLLECTION SELECTOR ========== */
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-6">
               <div className="rounded-2xl border border-border bg-surface p-6">
