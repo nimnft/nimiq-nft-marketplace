@@ -15,6 +15,17 @@ const nextConfig: NextConfig = {
   },
   devIndicators: false,
   serverExternalPackages: ["@nimiq/hub-api"],
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        net: false,
+        tls: false,
+        fs: false,
+      };
+    }
+    return config;
+  },
 };
 
 export default nextConfig;
